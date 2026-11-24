@@ -49,3 +49,5 @@ application-secrets.properties
 
 # Informes locales de pruebas
 evidencias/pruebas/
+
+respaldos/
