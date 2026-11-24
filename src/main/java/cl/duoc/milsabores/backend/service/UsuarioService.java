@@ -112,6 +112,37 @@ public class UsuarioService {
         return convertir(repository.save(usuario));
     }
 
+    public UsuarioResponse crearAdmin(UsuarioAdminRequest r) {
+        UsuarioResponse creado = registrar(new UsuarioRequest(r.run(), r.nombres(), r.apellidos(), r.correo(), r.password(), r.region(), r.comuna(), r.direccion()));
+        Usuario u = obtenerEntidad(creado.id());
+        u.setRol(r.rol()); u.setActivo(r.activo());
+        return convertir(repository.save(u));
+    }
+
+    public UsuarioResponse actualizar(Long id, UsuarioActualizarRequest r, String actor) {
+        Usuario u = obtenerEntidad(id);
+        proteger(u, actor);
+        String correo = r.correo().trim().toLowerCase(Locale.ROOT);
+        String run = r.run().replace(".", "").replace("-", "").trim().toUpperCase(Locale.ROOT);
+        if (repository.findByCorreo(correo).filter(x -> !x.getId().equals(id)).isPresent() ||
+            repository.findByRun(run).filter(x -> !x.getId().equals(id)).isPresent())
+            throw new ConflictoException("RUN o correo ya registrado");
+        if (r.password() != null && !r.password().isEmpty()) {
+            if (r.password().length() < 8 || r.password().getBytes(StandardCharsets.UTF_8).length > 72)
+                throw new SolicitudInvalidaException("Contraseña inválida");
+            u.setPasswordHash(passwordEncoder.encode(r.password()));
+        }
+        u.setRun(run); u.setCorreo(correo); u.setNombres(r.nombres()); u.setApellidos(r.apellidos());
+        u.setRegion(r.region()); u.setComuna(r.comuna()); u.setDireccion(r.direccion());
+        u.setRol(r.rol()); u.setActivo(r.activo());
+        return convertir(repository.save(u));
+    }
+
+    public void protegerCuenta(Long id, String actor) { proteger(obtenerEntidad(id), actor); }
+    private void proteger(Usuario u, String actor) {
+        if (u.getCorreo().equalsIgnoreCase(actor)) throw new ConflictoException("No puedes modificar tu propia cuenta desde este panel");
+    }
+
     private Usuario obtenerEntidad(Long id) {
         return repository.findById(id)
             .orElseThrow(() ->
