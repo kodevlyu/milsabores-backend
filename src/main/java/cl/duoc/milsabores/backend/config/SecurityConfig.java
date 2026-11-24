@@ -1,4 +1,3 @@
-
 package cl.duoc.milsabores.backend.config;
 
 import cl.duoc.milsabores.backend.security.*;
@@ -79,6 +78,11 @@ public class SecurityConfig {
                     HttpMethod.GET,
                     "/api/v1/productos/administracion"
                 ).hasAnyRole("ADMIN", "VENDEDOR")
+
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/v1/categorias/administracion"
+                ).hasRole("ADMIN")
 
                 // Catalogo publico de productos y categorias.
                 .requestMatchers(

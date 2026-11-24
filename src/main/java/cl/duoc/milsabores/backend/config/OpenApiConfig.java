@@ -67,7 +67,9 @@ public class OpenApiConfig {
                         http.equals("GET") &&
                         (ruta.startsWith("/api/v1/productos") ||
                          ruta.startsWith("/api/v1/categorias") ||
-                         ruta.equals("/api/v1/prueba"));
+                         ruta.equals("/api/v1/prueba")) &&
+                        !ruta.equals("/api/v1/productos/administracion") &&
+                        !ruta.equals("/api/v1/categorias/administracion");
 
                     boolean authPublica =
                         http.equals("POST") &&
