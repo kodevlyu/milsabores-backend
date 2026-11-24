@@ -1,3 +1,4 @@
+
 package cl.duoc.milsabores.backend.config;
 
 import cl.duoc.milsabores.backend.security.*;
@@ -58,6 +59,7 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
+                // Documentacion Swagger y prueba de conexion.
                 .requestMatchers(
                     "/swagger-ui.html",
                     "/swagger-ui/**",
@@ -65,12 +67,20 @@ public class SecurityConfig {
                     "/api/v1/prueba"
                 ).permitAll()
 
+                // Inicio de sesion y registro publico.
                 .requestMatchers(
                     HttpMethod.POST,
                     "/api/v1/auth/login",
                     "/api/v1/auth/register"
                 ).permitAll()
 
+                // Listado administrativo de productos.
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/v1/productos/administracion"
+                ).hasAnyRole("ADMIN", "VENDEDOR")
+
+                // Catalogo publico de productos y categorias.
                 .requestMatchers(
                     HttpMethod.GET,
                     "/api/v1/productos",
@@ -79,6 +89,7 @@ public class SecurityConfig {
                     "/api/v1/categorias/**"
                 ).permitAll()
 
+                // Administracion de productos y categorias.
                 .requestMatchers(
                     "/api/v1/productos",
                     "/api/v1/productos/**",
@@ -86,27 +97,32 @@ public class SecurityConfig {
                     "/api/v1/categorias/**"
                 ).hasRole("ADMIN")
 
+                // Administracion de usuarios.
                 .requestMatchers(
                     "/api/v1/usuarios",
                     "/api/v1/usuarios/**"
                 ).hasRole("ADMIN")
 
+                // Historial de compras del cliente.
                 .requestMatchers(
                     HttpMethod.GET,
                     "/api/v1/boletas/mias"
                 ).hasRole("CLIENTE")
 
+                // Realizar compras.
                 .requestMatchers(
                     HttpMethod.POST,
                     "/api/v1/boletas"
                 ).hasRole("CLIENTE")
 
+                // Consulta administrativa de ventas.
                 .requestMatchers(
                     HttpMethod.GET,
                     "/api/v1/boletas",
                     "/api/v1/boletas/**"
                 ).hasAnyRole("ADMIN", "VENDEDOR")
 
+                // Bloquear cualquier otra solicitud.
                 .anyRequest().denyAll()
             )
 
