@@ -27,6 +27,7 @@ public class JwtService {
     public String generarToken(String correo, String rol) {
         return Jwts.builder()
             .subject(correo)
+            .id(java.util.UUID.randomUUID().toString())
             .claim("rol", rol)
             .issuedAt(new Date())
             .expiration(

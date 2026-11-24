@@ -20,15 +20,17 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UsuarioRepository usuarioRepository;
     private final JwtService jwtService;
+    private final RefreshTokenService refresh;
 
     public AuthService(
             AuthenticationManager authenticationManager,
             UsuarioRepository usuarioRepository,
-            JwtService jwtService) {
+            JwtService jwtService, RefreshTokenService refresh) {
 
         this.authenticationManager = authenticationManager;
         this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
+        this.refresh = refresh;
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -56,17 +58,6 @@ public class AuthService {
                 )
             );
 
-        String token = jwtService.generarToken(
-            usuario.getCorreo(),
-            usuario.getRol().name()
-        );
-
-        return new AuthResponse(
-            token,
-            "Bearer",
-            usuario.getCorreo(),
-            usuario.getRol().name(),
-            jwtService.getExpiration()
-        );
+        return refresh.iniciar(usuario);
     }
 }

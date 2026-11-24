@@ -74,7 +74,7 @@ public class OpenApiConfig {
                     boolean authPublica =
                         http.equals("POST") &&
                         (ruta.equals("/api/v1/auth/login") ||
-                         ruta.equals("/api/v1/auth/register"));
+                         ruta.equals("/api/v1/auth/register") || ruta.equals("/api/v1/auth/refresh") || ruta.equals("/api/v1/auth/logout"));
 
                     boolean publico = lecturaPublica || authPublica;
 

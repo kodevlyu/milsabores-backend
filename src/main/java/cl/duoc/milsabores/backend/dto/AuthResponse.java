@@ -6,7 +6,8 @@ public record AuthResponse(
     String tipo,
     String correo,
     String rol,
-    long expiracion
+    long expiracion,
+    String refreshToken
 
 ) {
 }

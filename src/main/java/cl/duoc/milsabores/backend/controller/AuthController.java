@@ -19,13 +19,15 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final cl.duoc.milsabores.backend.service.RefreshTokenService refresh;
     private final UsuarioService usuarioService;
 
     public AuthController(
             AuthService authService,
-            UsuarioService usuarioService) {
+            UsuarioService usuarioService, cl.duoc.milsabores.backend.service.RefreshTokenService refresh) {
 
         this.authService = authService;
+        this.refresh = refresh;
         this.usuarioService = usuarioService;
     }
 
@@ -47,4 +49,12 @@ public class AuthController {
 
         return usuarioService.registrar(request);
     }
+    @PostMapping("/refresh")
+    @Operation(summary="Renovar y rotar token de sesion")
+    public ResponseEntity<AuthResponse> renovar(@Valid @RequestBody RefreshRequest request) {
+        return ResponseEntity.ok().header("Cache-Control","no-store").body(refresh.renovar(request.refreshToken()));
+    }
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cerrar(@Valid @RequestBody RefreshRequest request) { refresh.cerrar(request.refreshToken()); }
 }
