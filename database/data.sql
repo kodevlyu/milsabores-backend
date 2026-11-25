@@ -67,15 +67,15 @@ INSERT INTO usuario
 region, comuna, direccion, rol)
 VALUES
 ('111111111', 'Administrador', 'Prueba',
-'admin@example.com', 'PENDIENTE_BCRYPT',
+'admin@example.com', '$2a$10$dM/RGVd/EfHHuKUGegwuueHQZreqU0347S6SSUfPleyGw.NT9cHKm',
 'Metropolitana', 'Melipilla', 'Direccion ficticia 1', 'ADMIN'),
 
 ('222222222', 'Vendedor', 'Prueba',
-'vendedor@example.com', 'PENDIENTE_BCRYPT',
+'vendedor@example.com', '$2a$10$6Md5M50.aJ6p/UEBbvXfB.4PZh6aN1It/p9Gur8K11uIQUnisO0Vy',
 'Metropolitana', 'Melipilla', 'Direccion ficticia 2', 'VENDEDOR'),
 
 ('333333333', 'Cliente', 'Prueba',
-'cliente@example.com', 'PENDIENTE_BCRYPT',
+'cliente@example.com', '$2a$10$2.RpgbSCP8aoB8s7w0L2u.szKYDnppdrYEAksHs5.gAivHPPqjH1K',
 'Metropolitana', 'Melipilla', 'Direccion ficticia 3', 'CLIENTE');
 
 -- 4. BOLETA DE PRUEBA
